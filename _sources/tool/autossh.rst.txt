@@ -1,0 +1,69 @@
+Autossh
+=======
+
+Autossh is a program to start a copy of ssh and monitor it, restarting it as necessary should it die or stop passing traffic. Here we use autossh to realize ``NAT traversal``.
+
+Suppose we have three mechine:
+
+A. HBC without public IP, ssh port 22
+B. Server(like `aliyun <http://www.aliyun.com>`_) with public IP, ssh port 12318, another two free ports 5678 and 8765
+C. PC which need to connect A
+
+
+Connect without password for ``A->B``
+---------------------------------------------
+- Generate key in A:
+
+.. code:: shell
+
+    ssh-keygen -t rsa 
+
+- Give public key of A to B
+
+.. code:: shell
+
+    cat .ssh/id_rsa.pub | ssh user_B@ip_B 'cat >> .ssh/authorized_keys'
+
+
+- Check that you can connect from A to B without password, otherswise you should see `Others`_ .
+
+Auto ssh from ``B->A``
+----------------------
+- Now you can create a tunnel from B to A
+
+.. code:: shell
+
+    autossh -M 5678 -fCNR 8765:localhost:22 user_B@ip_B -p12318
+
+- Finally, connection from C to A is OK
+
+.. code:: shell
+
+    ssh user_A@ip_B -p 8765
+
+
+
+Others
+--------
+.. note::
+    #. make sure that A can connect B     
+    #. need to change access permission for .ssh and .ssh/* in B
+
+    .. code:: shell
+        
+        chmod 700 .ssh
+        chmod 600 .ssh/* 
+
+.. error::
+
+    you may still have wrong in connect B from A
+    
+    .. code:: shell
+
+        sign_and_send_pubkey: signing failed: agent refused operation
+    
+    you should do this to add the key
+
+    .. code:: shell
+
+        ssh-add ~/.ssh/id_rsa
