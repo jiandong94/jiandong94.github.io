@@ -1,0 +1,365 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Configure my own Vim &mdash; Notes  documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="prev" title="Git" href="git.html" /> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Notes
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="autossh.html">Autossh</a></li>
+<li class="toctree-l1"><a class="reference internal" href="git.html">Git</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Configure my own Vim</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Notes</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+      <li>Configure my own Vim</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/tool/vim.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="configure-my-own-vim">
+<h1>Configure my own Vim<a class="headerlink" href="#configure-my-own-vim" title="Permalink to this headline">¶</a></h1>
+<ol class="arabic simple">
+<li>git clone <code class="docutils literal notranslate"><span class="pre">Vundle.vim</span></code></li>
+</ol>
+<div class="code shell highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">git</span> <span class="n">clone</span> <span class="n">git</span><span class="nd">@github</span><span class="o">.</span><span class="n">com</span><span class="p">:</span><span class="n">VundleVim</span><span class="o">/</span><span class="n">Vundle</span><span class="o">.</span><span class="n">vim</span><span class="o">.</span><span class="n">git</span> <span class="o">~/.</span><span class="n">vim</span><span class="o">/</span><span class="n">bundle</span><span class="o">/</span><span class="n">Vundle</span><span class="o">.</span><span class="n">vim</span>
+</pre></div>
+</div>
+<ol class="arabic simple" start="2">
+<li>git clone <code class="docutils literal notranslate"><span class="pre">.vimrc</span></code></li>
+</ol>
+<div class="code shell highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">git</span> <span class="n">clone</span> <span class="n">git</span><span class="nd">@github</span><span class="o">.</span><span class="n">com</span><span class="p">:</span><span class="n">jiandong94</span><span class="o">/</span><span class="n">notes</span><span class="o">.</span><span class="n">git</span>
+<span class="n">cp</span> <span class="n">notes</span><span class="o">/</span><span class="n">vim</span><span class="o">/.</span><span class="n">vimrc</span> <span class="o">~/</span>
+<span class="n">cp</span> <span class="o">-</span><span class="n">rf</span> <span class="n">notes</span><span class="o">/</span><span class="n">vim</span><span class="o">/</span><span class="n">colors</span> <span class="o">~/</span><span class="n">vim</span><span class="o">/</span>
+</pre></div>
+</div>
+<ol class="arabic" start="3">
+<li><p class="first">install Plugin</p>
+<p>read <code class="docutils literal notranslate"><span class="pre">.vimrc</span></code></p>
+</li>
+</ol>
+<p>Here is my <code class="docutils literal notranslate"><span class="pre">.vimrc</span></code> :</p>
+<div class="code shell highlight-default notranslate"><div class="highlight"><pre><span></span>&quot; ======================================
+&quot;                Vundle
+&quot; ======================================
+set nocompatible              &quot; be iMproved, required
+filetype off                  &quot; required
+
+&quot; set the runtime path to include Vundle and initialize
+set rtp+=~/.vim/bundle/Vundle.vim
+call vundle#begin()
+&quot; alternatively, pass a path where Vundle should install plugins
+&quot;call vundle#begin(&#39;~/some/path/here&#39;)
+
+&quot; let Vundle manage Vundle, required
+Plugin &#39;VundleVim/Vundle.vim&#39;
+&quot; The following are examples of different formats supported.
+&quot; Keep Plugin commands between vundle#begin/end.
+&quot; 1.plugin on GitHub repo
+&quot;Plugin &#39;tpope/vim-fugitive&#39;
+Plugin &#39;w0rp/ale&#39;
+Plugin &#39;vim-airline/vim-airline&#39;
+&quot; Pilgin &#39;Shougo/neocomplete.vim&#39;
+
+&quot; 2.plugin from http://vim-scripts.org/vim/scripts.html
+&quot; Plugin &#39;L9&#39;
+&quot; 3.Git plugin not hosted on GitHub
+&quot;Plugin &#39;git://git.wincent.com/command-t.git&#39;
+
+&quot; 4.git repos on your local machine (i.e. when working on your own plugin)
+&quot;Plugin &#39;file:///home/gmarik/path/to/plugin&#39;
+
+&quot; 5.The sparkup vim script is in a subdirectory of this repo called vim.
+&quot; Pass the path to set the runtimepath properly.
+&quot;Plugin &#39;rstacruz/sparkup&#39;, {&#39;rtp&#39;: &#39;vim/&#39;}
+
+&quot; 6.Install L9 and avoid a Naming conflict if you&#39;ve already installed a
+&quot; different version somewhere else.
+&quot; Plugin &#39;ascenator/L9&#39;, {&#39;name&#39;: &#39;newL9&#39;}
+
+&quot; All of your Plugins must be added before the following line
+call vundle#end()            &quot; required
+filetype plugin indent on    &quot; required
+
+&quot; To ignore plugin indent changes, instead use:
+&quot;filetype plugin on
+&quot;
+&quot; Brief help
+&quot; :PluginList       - lists configured plugins
+&quot; :PluginInstall    - installs plugins; append `!` to update or just :PluginUpdate
+&quot; :PluginSearch foo - searches for foo; append `!` to refresh local cache
+&quot; :PluginClean      - confirms removal of unused plugins; append `!` to auto-approve removal
+&quot;
+&quot; see :h vundle for more details or wiki for FAQ
+&quot; Put your non-Plugin stuff after this line
+
+&quot; :PlugInstall
+&quot; :PluginInstall &lt;plugin-name&gt;
+&quot; :BundleList
+&quot; :BundleInstall
+&quot; :BundleInstall!
+&quot; :BundleSearch foo
+&quot; :BundleSearch! foo
+&quot; :BundleClean
+&quot; :BundleClean!
+
+
+&quot; ale-setting {{{
+let g:ale_set_highlights = 0
+let g:ale_sign_error = &#39;✗&#39;
+let g:ale_sign_warning = &#39;⚡&#39;
+let g:ale_statusline_format = [&#39;✗ %d&#39;, &#39;⚡ %d&#39;, &#39;✔ OK&#39;]
+let g:ale_echo_msg_error_str = &#39;E&#39;
+let g:ale_echo_msg_warning_str = &#39;W&#39;
+let g:ale_echo_msg_format = &#39;[%linter%] %s [%severity%]&#39;
+let g:ale_lint_on_enter = 0
+
+
+nmap sp &lt;Plug&gt;(ale_previous_wrap)
+nmap sn &lt;Plug&gt;(ale_next_wrap)
+nmap &lt;Leader&gt;s :ALEToggle&lt;CR&gt;
+nmap &lt;Leader&gt;d :ALEDetail&lt;CR&gt;
+let g:ale_linters = {
+\   &#39;c++&#39;: [&#39;clang&#39;],
+\   &#39;c&#39;: [&#39;clang&#39;],
+\   &#39;python&#39;: [&#39;pylint&#39;],
+\}
+&quot; }}}
+
+
+
+&quot;my configure
+&quot;no maximize
+au GUIEnter * simalt ~x
+
+&quot;relavent to Chinese
+set ambiwidth=double
+set fileencoding=gb18030
+ set fileencodings=utf-8,gb18030,utf-16,big5
+
+&quot;no backup
+set writebackup
+set nobackup
+
+&quot;line number
+set nu!
+
+&quot;theme
+colorscheme molokai
+&quot;colorscheme solarized
+&quot;colorscheme desert
+&quot;colorscheme graywh
+
+&quot;syntax highlighting
+syntax enable
+syntax on
+
+
+&quot;font
+set guifont=Consolas:h10:cANSI
+set encoding=utf8
+
+&quot;dir
+set autochdir
+
+&quot;no autowrap
+set nowrap
+
+&quot;scroll bar
+set guioptions+=b
+
+set tabstop=4
+set expandtab
+set cindent shiftwidth=4
+set autoindent shiftwidth=4
+</pre></div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+      
+        <a href="git.html" class="btn btn-neutral" title="Git" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, jdchen
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../_static/jquery.js"></script>
+        <script type="text/javascript" src="../_static/underscore.js"></script>
+        <script type="text/javascript" src="../_static/doctools.js"></script>
+        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+
+  
+
+  <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

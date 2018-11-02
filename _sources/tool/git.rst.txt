@@ -1,0 +1,77 @@
+Git
+======
+
+``Git`` is a version-control system for tracking changes in computer files and you can store and share your codes on the `github <https://github.com/>`_ .
+
+Install git
+------------
+
+1. Download the git
+
+.. code :: shell
+
+    wget https://github.com/git/git/archive/v2.19.1.tar.gz
+
+2. Compile and install it 
+
+.. code :: shell
+
+   tar -xvf v2.19.1.tar.gz
+   cd git-2.19.1
+   make configure
+   ./configure --prefix=$HOME/software/git-2.19.1
+   make all doc
+   make install
+
+.. error :: 
+    
+    lack of asciidoc
+    
+    .. code :: shell
+    
+        wget https://github.com/asciidoc/asciidoc/archive/8.6.10.tar.gz
+    
+
+Commond of git
+---------------
+
+- Initialize repository
+
+.. code :: shell
+    
+    git init # initialize
+    git add # add a file
+    git commit -m "xxx" # commit
+    git rm # delete
+
+- Version control
+
+.. code :: shell
+
+    git status # check whether have modified
+    git diff # difference between working directory and repository
+    git diff -HEAD -- <file> 
+    git log --pretty=oneline # commit log
+    git reflog # future
+    git reset --hard HEAD^ # a->b->c  a->b HEAD^^ HEAD~100
+    git reset --hard <commit_id> # a->b a->b->c
+    git revert <commit_id>
+    git checkout -- <file> # throw modification in working directory 
+    git reset  HEAD <file> # throw modification in stage
+
+- Add remote repository
+
+.. code :: shell
+    
+    git remote add origin git@server-name:path/repo-name.git 
+    git push -u origin master
+    git clone
+
+-  Branch management
+
+.. code :: shell 
+  
+    git checkout -b dev # create a new branch and switch to it 
+    git branch 
+    git branch -d <branch_name>
+    git merge <branch_name>

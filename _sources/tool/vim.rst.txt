@@ -1,0 +1,168 @@
+Configure my own Vim
+=====================
+
+1. git clone ``Vundle.vim``
+
+.. code :: shell
+
+    git clone git@github.com:VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
+
+2. git clone ``.vimrc``
+
+.. code :: shell 
+
+    git clone git@github.com:jiandong94/notes.git 
+    cp notes/vim/.vimrc ~/
+    cp -rf notes/vim/colors ~/vim/
+ 
+3. install Plugin
+
+   read ``.vimrc``
+
+Here is my ``.vimrc`` :
+
+.. code :: shell
+
+    " ======================================
+    "                Vundle
+    " ======================================
+    set nocompatible              " be iMproved, required
+    filetype off                  " required
+
+    " set the runtime path to include Vundle and initialize
+    set rtp+=~/.vim/bundle/Vundle.vim
+    call vundle#begin()
+    " alternatively, pass a path where Vundle should install plugins
+    "call vundle#begin('~/some/path/here')
+
+    " let Vundle manage Vundle, required
+    Plugin 'VundleVim/Vundle.vim'
+    " The following are examples of different formats supported.
+    " Keep Plugin commands between vundle#begin/end.
+    " 1.plugin on GitHub repo
+    "Plugin 'tpope/vim-fugitive'
+    Plugin 'w0rp/ale'
+    Plugin 'vim-airline/vim-airline'
+    " Pilgin 'Shougo/neocomplete.vim'
+
+    " 2.plugin from http://vim-scripts.org/vim/scripts.html
+    " Plugin 'L9'
+    " 3.Git plugin not hosted on GitHub
+    "Plugin 'git://git.wincent.com/command-t.git'
+
+    " 4.git repos on your local machine (i.e. when working on your own plugin)
+    "Plugin 'file:///home/gmarik/path/to/plugin'
+
+    " 5.The sparkup vim script is in a subdirectory of this repo called vim.
+    " Pass the path to set the runtimepath properly.
+    "Plugin 'rstacruz/sparkup', {'rtp': 'vim/'}
+
+    " 6.Install L9 and avoid a Naming conflict if you've already installed a
+    " different version somewhere else.
+    " Plugin 'ascenator/L9', {'name': 'newL9'}
+
+    " All of your Plugins must be added before the following line
+    call vundle#end()            " required
+    filetype plugin indent on    " required
+
+    " To ignore plugin indent changes, instead use:
+    "filetype plugin on
+    "
+    " Brief help
+    " :PluginList       - lists configured plugins
+    " :PluginInstall    - installs plugins; append `!` to update or just :PluginUpdate
+    " :PluginSearch foo - searches for foo; append `!` to refresh local cache
+    " :PluginClean      - confirms removal of unused plugins; append `!` to auto-approve removal
+    "
+    " see :h vundle for more details or wiki for FAQ
+    " Put your non-Plugin stuff after this line
+
+    " :PlugInstall                         
+    " :PluginInstall <plugin-name>         
+    " :BundleList               
+    " :BundleInstall            
+    " :BundleInstall!           
+    " :BundleSearch foo         
+    " :BundleSearch! foo        
+    " :BundleClean              
+    " :BundleClean!           
+
+    
+    " ale-setting {{{
+    let g:ale_set_highlights = 0
+    let g:ale_sign_error = '✗'
+    let g:ale_sign_warning = '⚡'
+    let g:ale_statusline_format = ['✗ %d', '⚡ %d', '✔ OK']
+    let g:ale_echo_msg_error_str = 'E'
+    let g:ale_echo_msg_warning_str = 'W'
+    let g:ale_echo_msg_format = '[%linter%] %s [%severity%]'
+    let g:ale_lint_on_enter = 0
+
+
+    nmap sp <Plug>(ale_previous_wrap)
+    nmap sn <Plug>(ale_next_wrap)
+    nmap <Leader>s :ALEToggle<CR>
+    nmap <Leader>d :ALEDetail<CR>
+    let g:ale_linters = {
+    \   'c++': ['clang'],
+    \   'c': ['clang'],
+    \   'python': ['pylint'],
+    \}
+    " }}}
+
+
+
+    "my configure
+    "no maximize
+    au GUIEnter * simalt ~x
+
+    "relavent to Chinese
+    set ambiwidth=double 
+    set fileencoding=gb18030
+     set fileencodings=utf-8,gb18030,utf-16,big5
+
+    "no backup
+    set writebackup
+    set nobackup
+
+    "line number
+    set nu!
+
+    "theme
+    colorscheme molokai
+    "colorscheme solarized
+    "colorscheme desert
+    "colorscheme graywh
+
+    "syntax highlighting
+    syntax enable
+    syntax on
+
+
+    "font
+    set guifont=Consolas:h10:cANSI
+    set encoding=utf8
+
+    "dir
+    set autochdir
+
+    "no autowrap
+    set nowrap
+
+    "scroll bar
+    set guioptions+=b
+
+    set tabstop=4
+    set expandtab
+    set cindent shiftwidth=4
+    set autoindent shiftwidth=4
+
+
+
+
+
+
+
+
+
+
