@@ -1,0 +1,600 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>tbpy &mdash; Notes  documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/collapsible-lists/css/tree_view.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Notes
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../tool/fedora.html">Use for Linux(Fedora)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tool/autossh.html">Autossh</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tool/git.html">Git</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tool/vim.html">Configure my own Vim</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Notes</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="index.html">Module code</a> &raquo;</li>
+        
+      <li>tbpy</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for tbpy</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">print_function</span>
+<span class="c1"># Learn from PythTB</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">copy</span>
+<div class="viewcode-block" id="tb_model"><a class="viewcode-back" href="../python/tbpy.html#tbpy.tb_model">[docs]</a><span class="k">class</span> <span class="nc">tb_model</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Get the band struct with tight-binding model</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    dim_k : int</span>
+<span class="sd">        Dimension of reciprocal space, which specifies how many directions are</span>
+<span class="sd">        considered to be periodic.</span>
+<span class="sd">    dim_r : int</span>
+<span class="sd">        Dimension of real space, which specifies how many real space vectors are</span>
+<span class="sd">        needed to get the coordinates of sites.</span>
+<span class="sd">    lat : array of floats</span>
+<span class="sd">        Lattice vectors in Cartesian coordinates, eg,[[1.0,0.0],[0.0,1.0]] in </span>
+<span class="sd">        2D situation.</span>
+<span class="sd">    orb : array of floats</span>
+<span class="sd">        Orbtial coordinates (sites coordinates in unit cell) in reduced coordinates.</span>
+<span class="sd">    per : list of ints</span>
+<span class="sd">        Indices which specifies which lattice vectors considered to be periodic. By</span>
+<span class="sd">        defalt, all directions are periodic.</span>
+<span class="sd">    nspin : int</span>
+<span class="sd">        Number of spin components for each orbitals. If *nspin* is 1, then the model </span>
+<span class="sd">        is spinless, if *nspin* is 2, then it is spinful. By defalt, this parameter is </span>
+<span class="sd">        1.</span>
+
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    _dim_k</span>
+<span class="sd">    _dim_r</span>
+<span class="sd">    _lat</span>
+<span class="sd">    _orb</span>
+<span class="sd">    _per</span>
+<span class="sd">    _nspin</span>
+<span class="sd">    _norb : int</span>
+<span class="sd">        The number of orbitals</span>
+<span class="sd">    _nsta : int</span>
+<span class="sd">        Number of states for each k-point, which equals *orb\*nspin*.</span>
+<span class="sd">    _onsite_en : array of floats </span>
+<span class="sd">        Onsite energy for each orbital, by defalt, it is zero.</span>
+<span class="sd">    _onsite_en_spec : array of bools</span>
+<span class="sd">        An array of bools to specify  </span>
+<span class="sd">    _hopping : list</span>
+<span class="sd">    _hopping_spec  : bool</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">dim_k</span><span class="p">,</span><span class="n">dim_r</span><span class="p">,</span><span class="n">lat</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span><span class="n">orb</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span><span class="n">per</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span><span class="n">nspin</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_dim_k</span> <span class="o">=</span> <span class="n">dim_k</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_dim_r</span> <span class="o">=</span> <span class="n">dim_r</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_lat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">lat</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_orb</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">orb</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_norb</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_orb</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_nspin</span> <span class="o">=</span> <span class="n">nspin</span>
+        
+        <span class="c1"># choose periodic directions</span>
+        <span class="k">if</span> <span class="n">per</span> <span class="o">==</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_per</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_dim_k</span><span class="p">))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_per</span> <span class="o">=</span> <span class="n">per</span>
+
+
+        <span class="c1"># number of state for each k-point</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_nsta</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_norb</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">_nspin</span>
+
+        <span class="c1"># initialize onsite energy zeros</span>
+        <span class="k">if</span> <span class="n">nspin</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_onsite_en</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">_norb</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">_nspin</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_onsite_en</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">_norb</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">complex</span><span class="p">)</span>
+
+        <span class="c1"># initialize onsite energy unspecified</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_onsite_en_spec</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">_norb</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">bool</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_onsite_en_spec</span><span class="p">[:]</span> <span class="o">=</span> <span class="kc">False</span>
+
+        <span class="c1"># initialize hopping term to list</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_hopping</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_hopping_spec</span> <span class="o">=</span> <span class="kc">False</span>
+
+<div class="viewcode-block" id="tb_model.set_onsite"><a class="viewcode-back" href="../python/tbpy.html#tbpy.tb_model.set_onsite">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">set_onsite</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">onsite_en</span><span class="p">,</span><span class="n">ind_i</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span><span class="n">mode</span><span class="o">=</span><span class="s2">&quot;set&quot;</span><span class="p">):</span>
+        <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Define on-site energy for tight-biding models.</span>
+<span class="sd">        </span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        onsite_en : array of floats</span>
+<span class="sd">            A list of energy for each orbitals.</span>
+<span class="sd">        ind_i : int</span>
+<span class="sd">            Index of obtial whose on-site energy you wish to change.</span>
+<span class="sd">        mode : string</span>
+<span class="sd">            Specify the way you wish to change on-site energy.</span>
+
+<span class="sd">            * &quot;set&quot; Defalt value.</span>
+<span class="sd">        </span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># check len(onsite_en) == len(self_orb) </span>
+        <span class="k">if</span> <span class="n">ind_i</span> <span class="o">==</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">onsite_en</span><span class="p">)</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_norb</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n\n</span><span class="s2">dim of onsite_en is not equal to orb&#39;s&quot;</span><span class="p">)</span>
+        
+        <span class="c1"># check ind_i is not out of range</span>
+        <span class="k">if</span> <span class="n">ind_i</span> <span class="o">!=</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">ind_i</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">ind_i</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_norb</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n\n</span><span class="s2">ind_i is out of range&quot;</span><span class="p">)</span>
+
+        <span class="c1"># choose mode: &quot;set&quot;,&quot;reset&quot;,&quot;add&quot;</span>
+        <span class="k">if</span> <span class="n">mode</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;set&quot;</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">ind_i</span> <span class="o">!=</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_onsite_en_spec</span><span class="p">[</span><span class="n">ind_i</span><span class="p">]</span> <span class="o">==</span> <span class="kc">True</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n\n</span><span class="s2">onsite energy at this site was specified!&quot;</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_onsite_en</span><span class="p">[</span><span class="n">ind_i</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_val_to_block</span><span class="p">(</span><span class="n">onsite_en</span><span class="p">)</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_onsite_en_spec</span><span class="p">[</span><span class="n">ind_i</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">if</span> <span class="kc">True</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_onsite_en_spec</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n\n</span><span class="s2">onsite energy at some sites were specified!&quot;</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_norb</span><span class="p">):</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">_onsite_en</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_val_to_block</span><span class="p">(</span><span class="n">onsite_en</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_onsite_en_spec</span><span class="p">[:]</span> <span class="o">=</span> <span class="kc">True</span></div>
+    
+<div class="viewcode-block" id="tb_model.set_hop"><a class="viewcode-back" href="../python/tbpy.html#tbpy.tb_model.set_hop">[docs]</a>    <span class="k">def</span> <span class="nf">set_hop</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">hop_amp</span><span class="p">,</span><span class="n">ind_i</span><span class="p">,</span><span class="n">ind_j</span><span class="p">,</span><span class="n">ind_R</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span><span class="n">mode</span><span class="o">=</span><span class="s2">&quot;set&quot;</span><span class="p">):</span>
+        
+        <span class="c1"># check ind_i is not out of range</span>
+        <span class="k">if</span> <span class="n">ind_i</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">ind_i</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_norb</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n\n</span><span class="s2">ind_i is out of range&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">ind_j</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">ind_j</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_norb</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n\n</span><span class="s2">ind_j is out of range&quot;</span><span class="p">)</span>
+
+        <span class="c1"># check onsite energy is not counted in set_hop</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dim_k</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">ind_i</span> <span class="o">==</span> <span class="n">ind_j</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n\n</span><span class="s2"> Onsite energy is counted here!&quot;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">ind_i</span> <span class="o">==</span> <span class="n">ind_j</span><span class="p">:</span>
+                <span class="n">onsite_check</span> <span class="o">=</span> <span class="kc">True</span>
+                <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_per</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="nb">int</span><span class="p">(</span><span class="n">ind_R</span><span class="p">[</span><span class="n">k</span><span class="p">])</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+                        <span class="n">onsite_check</span> <span class="o">=</span> <span class="kc">False</span>
+                <span class="k">if</span> <span class="n">onsite_check</span> <span class="o">==</span> <span class="kc">True</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n\n</span><span class="s2"> Onsite energy is counted here!&quot;</span><span class="p">)</span>
+        
+        <span class="c1"># consider spin</span>
+        <span class="n">hop_amp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_val_to_block</span><span class="p">(</span><span class="n">hop_amp</span><span class="p">)</span>
+        <span class="c1"># hopping parameters to be stored</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dim_k</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">hop_para</span> <span class="o">=</span> <span class="p">[</span><span class="n">hop_amp</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="n">ind_i</span><span class="p">),</span> <span class="nb">int</span><span class="p">(</span><span class="n">ind_j</span><span class="p">)]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">hop_para</span> <span class="o">=</span> <span class="p">[</span><span class="n">hop_amp</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="n">ind_i</span><span class="p">),</span> <span class="nb">int</span><span class="p">(</span><span class="n">ind_j</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">ind_R</span><span class="p">)]</span>
+
+
+        <span class="c1"># choose mode: &quot;set&quot;,&quot;add&quot;</span>
+        <span class="k">if</span> <span class="n">mode</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;set&quot;</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_hopping_spec</span> <span class="o">==</span> <span class="kc">True</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n\n</span><span class="s2"> This hopping term is repeated&quot;</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_hopping</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">hop_para</span><span class="p">)</span></div>
+        
+        
+    <span class="k">def</span> <span class="nf">_val_to_block</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">val</span><span class="p">):</span>
+        <span class="c1"># spinless</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_nspin</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">val</span>
+        <span class="c1"># spinful</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">_nspin</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="n">val_mat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">complex</span><span class="p">)</span>
+            <span class="n">val</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">val</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">val</span><span class="o">.</span><span class="n">shape</span> <span class="o">==</span> <span class="p">():</span>
+                <span class="n">val_mat</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">val</span>
+                <span class="n">val_mat</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">val</span>
+            <span class="k">elif</span> <span class="n">val</span><span class="o">.</span><span class="n">shape</span> <span class="o">==</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">):</span>
+                <span class="k">return</span> <span class="n">val</span>
+            <span class="k">return</span> <span class="n">val_mat</span>
+
+<div class="viewcode-block" id="tb_model.get_nsta"><a class="viewcode-back" href="../python/tbpy.html#tbpy.tb_model.get_nsta">[docs]</a>    <span class="k">def</span> <span class="nf">get_nsta</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_nsta</span></div>
+            
+    <span class="k">def</span> <span class="nf">_gen_ham</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">k_input</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="n">kpoint</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">k_input</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">kpoint</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="c1"># kpoint is a single number</span>
+            <span class="k">if</span> <span class="n">kpoint</span><span class="o">.</span><span class="n">shape</span> <span class="o">==</span> <span class="p">():</span>
+                <span class="n">kpoint</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">kpoint</span><span class="p">])</span>
+            <span class="c1"># check the size</span>
+            <span class="k">if</span> <span class="n">kpoint</span><span class="o">.</span><span class="n">shape</span> <span class="o">!=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_dim_k</span><span class="p">,):</span>
+                <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n\n</span><span class="s2"> The shape of k_input is wrong&quot;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n\n</span><span class="s2"> Please input k_input&quot;</span><span class="p">)</span>
+
+        <span class="c1"># Initial Hamiltonian matrix</span>
+        <span class="c1"># spinless</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_nspin</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">ham</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">_norb</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_norb</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">complex</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">_nspin</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="n">ham</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">_norb</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">_norb</span><span class="p">,</span><span class="mi">2</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">complex</span><span class="p">)</span>
+
+        <span class="c1"># Onsite energy</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_norb</span><span class="p">):</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_nspin</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="n">ham</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_onsite_en</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+            <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">_nspin</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+                <span class="n">ham</span><span class="p">[</span><span class="n">i</span><span class="p">,:,</span><span class="n">i</span><span class="p">,:]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_onsite_en</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+
+        <span class="c1"># Hopping</span>
+        <span class="k">for</span> <span class="n">hopping</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_hopping</span><span class="p">:</span>
+            <span class="n">amp</span> <span class="o">=</span> <span class="n">hopping</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">i</span> <span class="o">=</span> <span class="n">hopping</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+            <span class="n">j</span> <span class="o">=</span> <span class="n">hopping</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+            <span class="c1"># 0 dim</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dim_k</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">ind_R</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">hopping</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+                <span class="c1"># calculate R_{j} - R_{i}</span>
+                <span class="n">deltaR</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_orb</span><span class="p">[</span><span class="n">j</span><span class="p">,:]</span> <span class="o">+</span> <span class="n">ind_R</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">_orb</span><span class="p">[</span><span class="n">i</span><span class="p">,:]</span>
+                <span class="c1"># rake periodic components</span>
+                <span class="n">deltaR</span> <span class="o">=</span> <span class="n">deltaR</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_per</span><span class="p">]</span>
+                <span class="c1"># calculate phase factor</span>
+                <span class="n">phase</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">((</span><span class="mf">2.0</span><span class="n">j</span><span class="p">)</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">deltaR</span><span class="p">,</span> <span class="n">kpoint</span><span class="p">))</span>
+                <span class="n">amp</span> <span class="o">=</span> <span class="n">amp</span><span class="o">*</span><span class="n">phase</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_nspin</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="n">ham</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">]</span> <span class="o">+=</span> <span class="n">amp</span>
+                <span class="n">ham</span><span class="p">[</span><span class="n">j</span><span class="p">,</span><span class="n">i</span><span class="p">]</span> <span class="o">+=</span> <span class="n">amp</span><span class="o">.</span><span class="n">conjugate</span><span class="p">()</span>
+            <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">_nspin</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+                <span class="n">ham</span><span class="p">[</span><span class="n">i</span><span class="p">,:,</span><span class="n">j</span><span class="p">,:]</span> <span class="o">+=</span> <span class="n">amp</span>
+                <span class="n">ham</span><span class="p">[</span><span class="n">j</span><span class="p">,:,</span><span class="n">i</span><span class="p">,:]</span> <span class="o">+=</span> <span class="n">amp</span><span class="o">.</span><span class="n">T</span><span class="o">.</span><span class="n">conjugate</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">ham</span>
+
+    <span class="k">def</span> <span class="nf">_sol_ham</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">ham</span><span class="p">,</span><span class="n">eig_vectors</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="c1"># reshape Hamiltonian matrix</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_nspin</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">ham_use</span> <span class="o">=</span> <span class="n">ham</span><span class="p">;</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">_nspin</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="n">ham_use</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">ham</span><span class="p">,</span> <span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">_norb</span><span class="p">,</span> <span class="mi">2</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">_norb</span><span class="p">))</span>
+
+        <span class="c1"># check hermitian</span>
+        <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">ham_use</span><span class="o">-</span><span class="n">ham_use</span><span class="o">.</span><span class="n">T</span><span class="o">.</span><span class="n">conj</span><span class="p">()))</span> <span class="o">&gt;</span> <span class="mf">1.0E-9</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n\n</span><span class="s2"> Hamiltonian is not hermitian&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">eig_vectors</span> <span class="o">==</span> <span class="kc">False</span><span class="p">:</span>
+            <span class="nb">eval</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">eigvalsh</span><span class="p">(</span><span class="n">ham_use</span><span class="p">)</span>
+            <span class="nb">eval</span> <span class="o">=</span> <span class="n">_nice_eig</span><span class="p">(</span><span class="nb">eval</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="nb">eval</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="p">(</span><span class="nb">eval</span><span class="p">,</span><span class="n">evec</span><span class="p">)</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">eigh</span><span class="p">(</span><span class="n">ham_use</span><span class="p">)</span>
+            <span class="c1"># transform to evec[i,:]</span>
+            <span class="n">evec</span> <span class="o">=</span> <span class="n">evec</span><span class="o">.</span><span class="n">T</span>
+            <span class="c1"># sort eigenvalues and eigenvectors</span>
+            <span class="p">(</span><span class="nb">eval</span><span class="p">,</span><span class="n">evec</span><span class="p">)</span> <span class="o">=</span> <span class="n">_nice_eig</span><span class="p">(</span><span class="nb">eval</span><span class="p">,</span><span class="n">evec</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_nspin</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+                <span class="n">evec</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">evec</span><span class="p">,(</span><span class="bp">self</span><span class="o">.</span><span class="n">_nsta</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">_norb</span><span class="p">,</span><span class="mi">2</span><span class="p">))</span>  <span class="c1">#### ?</span>
+            <span class="k">return</span> <span class="p">(</span><span class="nb">eval</span><span class="p">,</span><span class="n">evec</span><span class="p">)</span>
+
+<div class="viewcode-block" id="tb_model.solve_all"><a class="viewcode-back" href="../python/tbpy.html#tbpy.tb_model.solve_all">[docs]</a>    <span class="k">def</span> <span class="nf">solve_all</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">k_list</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span><span class="n">eig_vectors</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="c1"># 0-dim case</span>
+        <span class="k">if</span> <span class="n">k_list</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dim_k</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n\n</span><span class="s2"> k_list can not be None if dim != 0&quot;</span><span class="p">)</span>
+            <span class="n">ham</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_gen_ham</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">eig_vectors</span> <span class="o">==</span> <span class="kc">False</span><span class="p">:</span>
+                <span class="nb">eval</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sol_ham</span><span class="p">(</span><span class="n">ham</span><span class="p">,</span><span class="n">eig_vector</span><span class="o">=</span><span class="n">eig_vector</span><span class="p">)</span>
+                <span class="k">return</span> <span class="nb">eval</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="p">(</span><span class="nb">eval</span><span class="p">,</span><span class="n">evec</span><span class="p">)</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sol_ham</span><span class="p">(</span><span class="n">ham</span><span class="p">,</span><span class="n">eig_vector</span><span class="o">=</span><span class="n">eig_vector</span><span class="p">)</span>
+                <span class="k">return</span> <span class="p">(</span><span class="nb">eval</span><span class="p">,</span> <span class="n">evec</span><span class="p">)</span>
+        <span class="c1"># an array of k_list</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># number of k-points</span>
+            <span class="n">nkpoint</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">k_list</span><span class="p">)</span>
+            <span class="c1"># return data</span>
+            <span class="c1"># (band, kpoint)</span>
+            <span class="n">return_eval</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">_nsta</span><span class="p">,</span> <span class="n">nkpoint</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+            <span class="c1"># (band, kponit, orbital, spin)</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_nspin</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="n">return_evec</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">_nsta</span><span class="p">,</span> <span class="n">nkpoint</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_norb</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">complex</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">_nspin</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+                <span class="n">return_evec</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">_nsta</span><span class="p">,</span> <span class="n">nkpoint</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_norb</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_nspin</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">complex</span><span class="p">)</span>
+
+            <span class="c1"># loop for every k-point</span>
+            <span class="k">for</span> <span class="n">i</span><span class="p">,</span><span class="n">k</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">k_list</span><span class="p">):</span>
+                <span class="n">ham</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_gen_ham</span><span class="p">(</span><span class="n">k</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">eig_vectors</span> <span class="o">==</span> <span class="kc">False</span><span class="p">:</span>
+                    <span class="nb">eval</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sol_ham</span><span class="p">(</span><span class="n">ham</span><span class="p">,</span> <span class="n">eig_vectors</span><span class="o">=</span><span class="n">eig_vectors</span><span class="p">)</span>
+                    <span class="n">return_eval</span><span class="p">[:,</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="nb">eval</span><span class="p">[:]</span>
+                <span class="k">else</span><span class="p">:</span> 
+                    <span class="p">(</span><span class="nb">eval</span><span class="p">,</span><span class="n">evec</span><span class="p">)</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sol_ham</span><span class="p">(</span><span class="n">ham</span><span class="p">,</span> <span class="n">eig_vectors</span><span class="o">=</span><span class="n">eig_vectors</span><span class="p">)</span>
+                    <span class="n">return_eval</span><span class="p">[:,</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="nb">eval</span><span class="p">[:]</span>
+                    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_nspin</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                        <span class="n">return_evec</span><span class="p">[:,</span><span class="n">i</span><span class="p">,:]</span> <span class="o">=</span> <span class="n">evec</span><span class="p">[:,:]</span>
+                    <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">_nspin</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+                        <span class="n">return_evec</span><span class="p">[:,</span><span class="n">i</span><span class="p">,:,:]</span> <span class="o">=</span> <span class="n">evec</span><span class="p">[:,:,:]</span>
+
+            <span class="k">if</span> <span class="n">eig_vectors</span> <span class="o">==</span> <span class="kc">False</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">return_eval</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">return</span> <span class="p">(</span><span class="n">return_eval</span><span class="p">,</span><span class="n">return_evec</span><span class="p">)</span></div>
+    
+<div class="viewcode-block" id="tb_model.solve_one"><a class="viewcode-back" href="../python/tbpy.html#tbpy.tb_model.solve_one">[docs]</a>    <span class="k">def</span> <span class="nf">solve_one</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">k_point</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span><span class="n">eig_vectors</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">k_point</span> <span class="o">==</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">solve_all</span><span class="p">(</span><span class="n">eig_vectors</span><span class="o">=</span><span class="n">eig_vectors</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">eig_vectors</span> <span class="o">==</span> <span class="kc">False</span><span class="p">:</span>
+                <span class="nb">eval</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">solve_all</span><span class="p">([</span><span class="n">k_point</span><span class="p">],</span><span class="n">eig_vectors</span><span class="o">=</span><span class="n">eig_vectors</span><span class="p">)</span>
+                <span class="k">return</span> <span class="nb">eval</span><span class="p">[:,</span><span class="mi">0</span><span class="p">]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="p">(</span><span class="nb">eval</span><span class="p">,</span><span class="n">evec</span><span class="p">)</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">solve_all</span><span class="p">([</span><span class="n">k_point</span><span class="p">],</span><span class="n">eig_vectors</span><span class="o">=</span><span class="n">eig_vectors</span><span class="p">)</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_nspin</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="p">(</span><span class="nb">eval</span><span class="p">[:,</span><span class="mi">0</span><span class="p">],</span> <span class="n">evec</span><span class="p">[:,</span><span class="mi">0</span><span class="p">,:])</span>
+                <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">_nspin</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="p">(</span><span class="nb">eval</span><span class="p">[:,</span><span class="mi">0</span><span class="p">],</span> <span class="n">evec</span><span class="p">[:,</span><span class="mi">0</span><span class="p">,:,:])</span></div>
+
+<div class="viewcode-block" id="tb_model.k_path"><a class="viewcode-back" href="../python/tbpy.html#tbpy.tb_model.k_path">[docs]</a>    <span class="k">def</span> <span class="nf">k_path</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">hspts</span><span class="p">,</span><span class="n">nk</span><span class="p">,</span><span class="n">report</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+        <span class="c1"># generate path of high-symmetry points in nk points</span>
+        <span class="c1"># (n_nodes, dim_k)</span>
+        <span class="n">k_list</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">hspts</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+        <span class="c1"># 1D case eg: hspts=[1,2,3]</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">k_list</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dim_k</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">k_list</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">k_list</span><span class="p">])</span><span class="o">.</span><span class="n">T</span>
+        
+        <span class="c1"># number of nodes</span>
+        <span class="n">n_nodes</span> <span class="o">=</span> <span class="n">k_list</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+        <span class="c1"># distance of nodes</span>
+        <span class="n">d_nodes</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">n_nodes</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+        <span class="c1"># a copy of lattice vector choosing periodic directions</span>
+        <span class="n">lat_per</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_lat</span><span class="p">)</span>
+        <span class="n">lat_per</span> <span class="o">=</span> <span class="n">lat_per</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_per</span><span class="p">]</span>
+        <span class="c1"># k_space metric tensor</span>
+        <span class="n">k_metric</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">inv</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">lat_per</span><span class="p">,</span> <span class="n">lat_per</span><span class="o">.</span><span class="n">T</span><span class="p">))</span>
+        <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">n_nodes</span><span class="p">):</span>
+            <span class="n">dk</span> <span class="o">=</span> <span class="n">k_list</span><span class="p">[</span><span class="n">n</span><span class="p">]</span> <span class="o">-</span> <span class="n">k_list</span><span class="p">[</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+            <span class="n">dklen</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">dk</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">k_metric</span><span class="p">,</span> <span class="n">dk</span><span class="p">)))</span>
+            <span class="n">d_nodes</span><span class="p">[</span><span class="n">n</span><span class="p">]</span> <span class="o">=</span> <span class="n">d_nodes</span><span class="p">[</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">dklen</span>
+        
+        <span class="c1"># number of k-point of nodes</span>
+        <span class="n">nk_nodes</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">n_nodes</span><span class="o">-</span><span class="mi">1</span><span class="p">):</span>
+            <span class="n">frac</span> <span class="o">=</span> <span class="n">d_nodes</span><span class="p">[</span><span class="n">n</span><span class="p">]</span><span class="o">/</span><span class="n">d_nodes</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+            <span class="n">nk_nodes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">frac</span><span class="o">*</span><span class="p">(</span><span class="n">nk</span><span class="o">-</span><span class="mi">1</span><span class="p">))))</span>
+        <span class="n">nk_nodes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">nk</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+
+        <span class="c1"># k-distance and k-points</span>
+        <span class="n">k_dist</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">nk</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+        <span class="n">k_vec</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">nk</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dim_k</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+
+        <span class="c1"># loop for all k-points</span>
+        <span class="n">k_vec</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">k_list</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">n_nodes</span><span class="p">):</span>
+            <span class="n">nk_i</span> <span class="o">=</span> <span class="n">nk_nodes</span><span class="p">[</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+            <span class="n">nk_j</span> <span class="o">=</span> <span class="n">nk_nodes</span><span class="p">[</span><span class="n">n</span><span class="p">]</span>
+            <span class="n">d_i</span> <span class="o">=</span> <span class="n">d_nodes</span><span class="p">[</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+            <span class="n">d_j</span> <span class="o">=</span> <span class="n">d_nodes</span><span class="p">[</span><span class="n">n</span><span class="p">]</span>
+            <span class="n">k_i</span> <span class="o">=</span> <span class="n">k_list</span><span class="p">[</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+            <span class="n">k_j</span> <span class="o">=</span> <span class="n">k_list</span><span class="p">[</span><span class="n">n</span><span class="p">]</span>
+            <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nk_i</span><span class="p">,</span> <span class="n">nk_j</span><span class="o">+</span><span class="mi">1</span><span class="p">):</span>
+                <span class="n">frac</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">m</span><span class="o">-</span><span class="n">nk_i</span><span class="p">)</span><span class="o">/</span><span class="nb">float</span><span class="p">(</span><span class="n">nk_j</span><span class="o">-</span><span class="n">nk_i</span><span class="p">)</span>
+                <span class="n">k_dist</span><span class="p">[</span><span class="n">m</span><span class="p">]</span> <span class="o">=</span> <span class="n">d_i</span> <span class="o">+</span> <span class="n">frac</span><span class="o">*</span><span class="p">(</span><span class="n">d_j</span><span class="o">-</span><span class="n">d_i</span><span class="p">)</span>
+                <span class="n">k_vec</span><span class="p">[</span><span class="n">m</span><span class="p">]</span> <span class="o">=</span> <span class="n">k_i</span> <span class="o">+</span> <span class="n">frac</span><span class="o">*</span><span class="p">(</span><span class="n">k_j</span><span class="o">-</span><span class="n">k_i</span><span class="p">)</span>
+        <span class="k">return</span> <span class="p">(</span><span class="n">k_vec</span><span class="p">,</span><span class="n">k_dist</span><span class="p">,</span><span class="n">d_nodes</span><span class="p">)</span></div>
+        
+
+<div class="viewcode-block" id="tb_model.display"><a class="viewcode-back" href="../python/tbpy.html#tbpy.tb_model.display">[docs]</a>    <span class="k">def</span> <span class="nf">display</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;==============================&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;k-space dimension          =&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dim_k</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;r-space dimension          =&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dim_r</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;number of orbitals         =&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_norb</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;number of spin components  =&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_nspin</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;periodic directions        =&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_per</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;number of states           =&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_nsta</span><span class="p">)</span>
+
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;hopping term:&quot;</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span><span class="n">hopping</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_hopping</span><span class="p">):</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;&lt;&quot;</span><span class="p">,</span><span class="n">hopping</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span><span class="s2">&quot;|H|&quot;</span><span class="p">,</span><span class="n">hopping</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span><span class="s2">&quot;+&quot;</span><span class="p">,</span><span class="n">hopping</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span><span class="s2">&quot;&gt;   =&quot;</span><span class="p">,</span><span class="n">_nice_type</span><span class="p">(</span><span class="n">hopping</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="mi">2</span><span class="p">))</span></div></div>
+<span class="k">def</span> <span class="nf">_nice_eig</span><span class="p">(</span><span class="nb">eval</span><span class="p">,</span><span class="n">evec</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="c1"># sort eigenvalues(real) and eigenvectors</span>
+    <span class="nb">eval</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="nb">eval</span><span class="o">.</span><span class="n">real</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+    <span class="n">args</span> <span class="o">=</span> <span class="nb">eval</span><span class="o">.</span><span class="n">argsort</span><span class="p">()</span>
+    <span class="nb">eval</span> <span class="o">=</span> <span class="nb">eval</span><span class="p">[</span><span class="n">args</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">evec</span> <span class="o">==</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="nb">eval</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">evec</span> <span class="o">=</span> <span class="n">evec</span><span class="p">[</span><span class="n">args</span><span class="p">]</span>
+        <span class="k">return</span> <span class="p">(</span><span class="nb">eval</span><span class="p">,</span> <span class="n">evec</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">_nice_type</span><span class="p">(</span><span class="n">num</span><span class="p">,</span><span class="n">k</span><span class="o">=</span><span class="mi">2</span><span class="p">):</span>
+    <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">num</span><span class="p">)</span> <span class="o">==</span> <span class="nb">int</span> <span class="ow">or</span> <span class="nb">type</span><span class="p">(</span><span class="n">num</span><span class="p">)</span> <span class="o">==</span> <span class="nb">float</span><span class="p">:</span>
+        <span class="k">return</span> <span class="nb">round</span><span class="p">(</span><span class="n">num</span><span class="p">,</span> <span class="n">k</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="nb">type</span><span class="p">(</span><span class="n">num</span><span class="p">)</span> <span class="o">==</span> <span class="nb">complex</span> <span class="ow">or</span> <span class="nb">type</span><span class="p">(</span><span class="n">num</span><span class="p">)</span> <span class="o">==</span> <span class="n">np</span><span class="o">.</span><span class="n">complex128</span><span class="p">:</span>
+        <span class="k">return</span> <span class="nb">round</span><span class="p">(</span><span class="n">num</span><span class="o">.</span><span class="n">real</span><span class="p">,</span> <span class="n">k</span><span class="p">)</span><span class="o">+</span><span class="nb">round</span><span class="p">(</span><span class="n">num</span><span class="o">.</span><span class="n">imag</span><span class="p">,</span> <span class="n">k</span><span class="p">)</span><span class="o">*</span><span class="mi">1</span><span class="n">j</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">num</span>
+
+
+
+
+
+
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, jdchen
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../_static/jquery.js"></script>
+        <script type="text/javascript" src="../_static/underscore.js"></script>
+        <script type="text/javascript" src="../_static/doctools.js"></script>
+        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script type="text/javascript" src="../_static/collapsible-lists/js/CollapsibleLists.compressed.js"></script>
+        <script type="text/javascript" src="../_static/collapsible-lists/js/apply-collapsible-lists.js"></script>
+    
+
+  
+
+  <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

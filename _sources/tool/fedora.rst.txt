@@ -1,0 +1,41 @@
+Use for Linux(Fedora)
+=====================
+
+Fedora is a nice Linux distribution developed by the community-supported Fedora Project 
+and Sponsored by Red Hat. Here I will list some contents of Fedora when I using it.
+
+Repository
+-----------
+We use ``DNF`` as a tool to manage the RPM packages and download software from 
+repository, such as ``fedora.repo``, ``fedora-update.repo``. However, official
+repositories are slowly downloaded for us at home, we need to use Domestic mirrors
+instead. The third part mirrors are in the following.
+
+- 163:
+.. code:: shell
+   
+    wget http://mirrors.163.com/.help/fedora-163.repo
+    wget http://mirrors.163.com/.help/fedora-updates-163.repo
+
+- aliyun
+.. code:: shell
+
+    wget http://mirrors.aliyun.com/repo/fedora.repo
+    wget http://mirrors.aliyun.com/repo/fedora-updates.repo
+
+There are some useful mirrors in the mean while
+
+- `FZUG <https://github.com/FZUG/repo/wiki/%E6%B7%BB%E5%8A%A0-FZUG-%E6%BA%90>`_
+
+    a Fedora software repo of Chinese community.
+
+- `RPMfusion <https://rpmfusion.org/Configuration/>`_
+
+We can choose the fastest mirror by setting ``fastestmirror=true`` in 
+``/etc/dnf/dnf.conf`` after Fedora 22. the installation is as following
+
+.. code:: shell
+
+    dnf clean all
+    download *.repo in /etc/yum.repos.d/
+    dnf makecache

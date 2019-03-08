@@ -1,0 +1,10 @@
+tbpy package
+============
+
+
+Module
+------
+.. automodule:: tbpy
+    :members:
+    :undoc-members:
+    :show-inheritance:

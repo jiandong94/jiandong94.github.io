@@ -35,6 +35,12 @@ Auto ssh from ``B->A``
 
     autossh -M 5678 -fCNR 8765:localhost:22 user_B@ip_B -p12318
 
+- In the file ``/etc/ssh/sshd_config``, you need to set
+
+.. code:: shell
+
+    GatewayPorts yes
+
 - Finally, connection from C to A is OK
 
 .. code:: shell

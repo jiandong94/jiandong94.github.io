@@ -14,10 +14,12 @@ which is a very nice tool to autodocument python and it use ``reStructuredText``
    :maxdepth: 1
    :caption: Contents:
    
+   tool/fedora
    tool/autossh
    tool/git
    tool/vim
-   
+
+    
 
 Indices and tables
 ==================
