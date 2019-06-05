@@ -4,6 +4,18 @@ Use for Linux(Fedora)
 Fedora is a nice Linux distribution developed by the community-supported Fedora Project 
 and Sponsored by Red Hat. Here I will list some contents of Fedora when I using it.
 
+Installation
+-------------
+Win10+Fedora with 2 drives: 250GB SSD and 500GB HDD.
+
+After Win10 installed, there are 125GB SSD and 233GB HDD left. I want to install 
+root(/), swap, boot, boot-efi on SSD and install home(/home) on HDD. I have to creat two Volumn Group 
+to make sure the root(/) and home(/home) are mounted at two partitions.  
+
+There may be a bug that the maximum boot size for ``ext4`` file system is 1024KB, but the minimum size for 
+installation is 200MB. I choose ``EFI System Partition`` instead and set 1024MB size, then reselect ``ext4``.
+The problem seems to be solved but I don't know why.
+
 Repository
 -----------
 We use ``DNF`` as a tool to manage the RPM packages and download software from 
@@ -12,12 +24,14 @@ repositories are slowly downloaded for us at home, we need to use Domestic mirro
 instead. The third part mirrors are in the following.
 
 - 163:
+
 .. code:: shell
    
     wget http://mirrors.163.com/.help/fedora-163.repo
     wget http://mirrors.163.com/.help/fedora-updates-163.repo
 
 - aliyun
+
 .. code:: shell
 
     wget http://mirrors.aliyun.com/repo/fedora.repo
@@ -39,3 +53,44 @@ We can choose the fastest mirror by setting ``fastestmirror=true`` in
     dnf clean all
     download *.repo in /etc/yum.repos.d/
     dnf makecache
+
+Systemd
+---------
+systemd is a suite of basic building blocks for a Linux system. 
+It provides a system and service manager that runs as PID 1 and 
+starts the rest of the system.
+
+.. code:: shell
+
+    [Unit]
+    Description=Name of Service
+    After=network.target # start after network service
+
+    [Service]
+    Type=simple
+    User=root
+    ExecStart=Your Commond
+
+    [Install]
+    WantedBy=multi-user.target # runlevels
+
+Software
+--------
+- Anaconda
+- Matlab
+- Chrome
+- Shadowsocks
+- Wechat
+- Tlp and Powertop
+.. code:: shell
+
+    sudo tlp-stat -b
+    sudo tlp start
+
+    sudo powertop --html=xx.html
+- TexStudio and TexLive
+- Inkscape
+- Zotero and Nutstore
+- Typora
+- MEGASync
+- MKL

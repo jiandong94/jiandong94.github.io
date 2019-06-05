@@ -17,34 +17,35 @@
   
 
   
+  <script type="text/javascript" src="../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../_static/jquery.js"></script>
+        <script type="text/javascript" src="../_static/underscore.js"></script>
+        <script type="text/javascript" src="../_static/doctools.js"></script>
+        <script type="text/javascript" src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
 
-  
-  
     
 
   
-
   <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-  <link rel="stylesheet" href="../_static/collapsible-lists/css/tree_view.css" type="text/css" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="prev" title="Git" href="git.html" /> 
-
-  
-  <script src="../_static/js/modernizr.min.js"></script>
-
 </head>
 
 <body class="wy-body-for-nav">
 
    
   <div class="wy-grid-for-nav">
-
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search">
+        <div class="wy-side-nav-search" >
           
 
           
@@ -151,26 +152,26 @@
   <div class="section" id="configure-my-own-vim">
 <h1>Configure my own Vim<a class="headerlink" href="#configure-my-own-vim" title="Permalink to this headline">¶</a></h1>
 <ol class="arabic simple">
-<li>git clone <code class="docutils literal notranslate"><span class="pre">Vundle.vim</span></code></li>
+<li><p>git clone <code class="docutils literal notranslate"><span class="pre">Vundle.vim</span></code></p></li>
 </ol>
-<div class="code shell highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">git</span> <span class="n">clone</span> <span class="n">git</span><span class="nd">@github</span><span class="o">.</span><span class="n">com</span><span class="p">:</span><span class="n">VundleVim</span><span class="o">/</span><span class="n">Vundle</span><span class="o">.</span><span class="n">vim</span><span class="o">.</span><span class="n">git</span> <span class="o">~/.</span><span class="n">vim</span><span class="o">/</span><span class="n">bundle</span><span class="o">/</span><span class="n">Vundle</span><span class="o">.</span><span class="n">vim</span>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>git clone git@github.com:VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
 </pre></div>
 </div>
 <ol class="arabic simple" start="2">
-<li>git clone <code class="docutils literal notranslate"><span class="pre">.vimrc</span></code></li>
+<li><p>git clone <code class="docutils literal notranslate"><span class="pre">.vimrc</span></code></p></li>
 </ol>
-<div class="code shell highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">git</span> <span class="n">clone</span> <span class="n">git</span><span class="nd">@github</span><span class="o">.</span><span class="n">com</span><span class="p">:</span><span class="n">jiandong94</span><span class="o">/</span><span class="n">notes</span><span class="o">.</span><span class="n">git</span>
-<span class="n">cp</span> <span class="n">notes</span><span class="o">/</span><span class="n">vim</span><span class="o">/.</span><span class="n">vimrc</span> <span class="o">~/</span>
-<span class="n">cp</span> <span class="o">-</span><span class="n">rf</span> <span class="n">notes</span><span class="o">/</span><span class="n">vim</span><span class="o">/</span><span class="n">colors</span> <span class="o">~/</span><span class="n">vim</span><span class="o">/</span>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>git clone git@github.com:jiandong94/notes.git
+cp notes/vim/.vimrc ~/
+cp -rf notes/vim/colors ~/.vim/
 </pre></div>
 </div>
 <ol class="arabic" start="3">
-<li><p class="first">install Plugin</p>
+<li><p>install Plugin</p>
 <p>read <code class="docutils literal notranslate"><span class="pre">.vimrc</span></code></p>
 </li>
 </ol>
 <p>Here is my <code class="docutils literal notranslate"><span class="pre">.vimrc</span></code> :</p>
-<div class="code shell highlight-default notranslate"><div class="highlight"><pre><span></span>&quot; ======================================
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>&quot; ======================================
 &quot;                Vundle
 &quot; ======================================
 set nocompatible              &quot; be iMproved, required
@@ -316,7 +317,7 @@ set autoindent shiftwidth=4
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
       
-        <a href="git.html" class="btn btn-neutral" title="Git" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="git.html" class="btn btn-neutral float-left" title="Git" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -342,28 +343,16 @@ set autoindent shiftwidth=4
   
 
 
-  
-
-    
-    
-      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
-        <script type="text/javascript" src="../_static/jquery.js"></script>
-        <script type="text/javascript" src="../_static/underscore.js"></script>
-        <script type="text/javascript" src="../_static/doctools.js"></script>
-        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-        <script type="text/javascript" src="../_static/collapsible-lists/js/CollapsibleLists.compressed.js"></script>
-        <script type="text/javascript" src="../_static/collapsible-lists/js/apply-collapsible-lists.js"></script>
-    
-
-  
-
-  <script type="text/javascript" src="../_static/js/theme.js"></script>
-
   <script type="text/javascript">
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script> 
+  </script>
+
+  
+  
+    
+   
 
 </body>
 </html>

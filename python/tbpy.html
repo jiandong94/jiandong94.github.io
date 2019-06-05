@@ -17,33 +17,34 @@
   
 
   
+  <script type="text/javascript" src="../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../_static/jquery.js"></script>
+        <script type="text/javascript" src="../_static/underscore.js"></script>
+        <script type="text/javascript" src="../_static/doctools.js"></script>
+        <script type="text/javascript" src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
 
-  
-  
     
 
   
-
   <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-  <link rel="stylesheet" href="../_static/collapsible-lists/css/tree_view.css" type="text/css" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" /> 
-
-  
-  <script src="../_static/js/modernizr.min.js"></script>
-
 </head>
 
 <body class="wy-body-for-nav">
 
    
   <div class="wy-grid-for-nav">
-
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search">
+        <div class="wy-side-nav-search" >
           
 
           
@@ -156,166 +157,137 @@
 <em class="property">class </em><code class="descclassname">tbpy.</code><code class="descname">tb_model</code><span class="sig-paren">(</span><em>dim_k</em>, <em>dim_r</em>, <em>lat=None</em>, <em>orb=None</em>, <em>per=None</em>, <em>nspin=1</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tbpy.html#tb_model"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tbpy.tb_model" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Get the band struct with tight-binding model</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
-<dt><strong>dim_k</strong> <span class="classifier-delimiter">:</span> <span class="classifier">int</span></dt>
-<dd><p class="first last">Dimension of reciprocal space, which specifies how many directions are
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>dim_k</strong><span class="classifier">int</span></dt><dd><p>Dimension of reciprocal space, which specifies how many directions are
 considered to be periodic.</p>
 </dd>
-<dt><strong>dim_r</strong> <span class="classifier-delimiter">:</span> <span class="classifier">int</span></dt>
-<dd><p class="first last">Dimension of real space, which specifies how many real space vectors are
+<dt><strong>dim_r</strong><span class="classifier">int</span></dt><dd><p>Dimension of real space, which specifies how many real space vectors are
 needed to get the coordinates of sites.</p>
 </dd>
-<dt><strong>lat</strong> <span class="classifier-delimiter">:</span> <span class="classifier">array of floats</span></dt>
-<dd><p class="first last">Lattice vectors in Cartesian coordinates, eg,[[1.0,0.0],[0.0,1.0]] in 
+<dt><strong>lat</strong><span class="classifier">array of floats</span></dt><dd><p>Lattice vectors in Cartesian coordinates, eg,[[1.0,0.0],[0.0,1.0]] in 
 2D situation.</p>
 </dd>
-<dt><strong>orb</strong> <span class="classifier-delimiter">:</span> <span class="classifier">array of floats</span></dt>
-<dd><p class="first last">Orbtial coordinates (sites coordinates in unit cell) in reduced coordinates.</p>
+<dt><strong>orb</strong><span class="classifier">array of floats</span></dt><dd><p>Orbtial coordinates (sites coordinates in unit cell) in reduced coordinates.</p>
 </dd>
-<dt><strong>per</strong> <span class="classifier-delimiter">:</span> <span class="classifier">list of ints</span></dt>
-<dd><p class="first last">Indices which specifies which lattice vectors considered to be periodic. By
+<dt><strong>per</strong><span class="classifier">list of ints</span></dt><dd><p>Indices which specifies which lattice vectors considered to be periodic. By
 defalt, all directions are periodic.</p>
 </dd>
-<dt><strong>nspin</strong> <span class="classifier-delimiter">:</span> <span class="classifier">int</span></dt>
-<dd><p class="first last">Number of spin components for each orbitals. If <em>nspin</em> is 1, then the model 
+<dt><strong>nspin</strong><span class="classifier">int</span></dt><dd><p>Number of spin components for each orbitals. If <em>nspin</em> is 1, then the model 
 is spinless, if <em>nspin</em> is 2, then it is spinful. By defalt, this parameter is 
 1.</p>
 </dd>
 </dl>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Attributes:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>_dim_k</strong></dt>
-<dd></dd>
-<dt><strong>_dim_r</strong></dt>
-<dd></dd>
-<dt><strong>_lat</strong></dt>
-<dd></dd>
-<dt><strong>_orb</strong></dt>
-<dd></dd>
-<dt><strong>_per</strong></dt>
-<dd></dd>
-<dt><strong>_nspin</strong></dt>
-<dd></dd>
-<dt><strong>_norb</strong> <span class="classifier-delimiter">:</span> <span class="classifier">int</span></dt>
-<dd><p class="first last">The number of orbitals</p>
 </dd>
-<dt><strong>_nsta</strong> <span class="classifier-delimiter">:</span> <span class="classifier">int</span></dt>
-<dd><p class="first last">Number of states for each k-point, which equals <em>orb*nspin</em>.</p>
+<dt class="field-even">Attributes</dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>_dim_k</strong></dt><dd></dd>
+<dt><strong>_dim_r</strong></dt><dd></dd>
+<dt><strong>_lat</strong></dt><dd></dd>
+<dt><strong>_orb</strong></dt><dd></dd>
+<dt><strong>_per</strong></dt><dd></dd>
+<dt><strong>_nspin</strong></dt><dd></dd>
+<dt><strong>_norb</strong><span class="classifier">int</span></dt><dd><p>The number of orbitals</p>
 </dd>
-<dt><strong>_onsite_en</strong> <span class="classifier-delimiter">:</span> <span class="classifier">array of floats</span></dt>
-<dd><p class="first last">Onsite energy for each orbital, by defalt, it is zero.</p>
+<dt><strong>_nsta</strong><span class="classifier">int</span></dt><dd><p>Number of states for each k-point, which equals <em>orb*nspin</em>.</p>
 </dd>
-<dt><strong>_onsite_en_spec</strong> <span class="classifier-delimiter">:</span> <span class="classifier">array of bools</span></dt>
-<dd><p class="first last">An array of bools to specify</p>
+<dt><strong>_onsite_en</strong><span class="classifier">array of floats</span></dt><dd><p>Onsite energy for each orbital, by defalt, it is zero.</p>
 </dd>
-<dt><strong>_hopping</strong> <span class="classifier-delimiter">:</span> <span class="classifier">list</span></dt>
-<dd></dd>
-<dt><strong>_hopping_spec</strong> <span class="classifier-delimiter">:</span> <span class="classifier">bool</span></dt>
-<dd></dd>
+<dt><strong>_onsite_en_spec</strong><span class="classifier">array of bools</span></dt><dd><p>An array of bools to specify</p>
+</dd>
+<dt><strong>_hopping</strong><span class="classifier">list</span></dt><dd></dd>
+<dt><strong>_hopping_spec</strong><span class="classifier">bool</span></dt><dd></dd>
 </dl>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 <p class="rubric">Methods</p>
-<table border="1" class="longtable docutils">
+<table class="longtable docutils align-center">
 <colgroup>
-<col width="10%" />
-<col width="90%" />
+<col style="width: 10%" />
+<col style="width: 90%" />
 </colgroup>
-<tbody valign="top">
-<tr class="row-odd"><td><a class="reference internal" href="#tbpy.tb_model.set_onsite" title="tbpy.tb_model.set_onsite"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_onsite</span></code></a>(onsite_en[,&nbsp;ind_i,&nbsp;mode])</td>
-<td>Define on-site energy for tight-biding models.</td>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tbpy.tb_model.set_onsite" title="tbpy.tb_model.set_onsite"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_onsite</span></code></a>(onsite_en[, ind_i, mode])</p></td>
+<td><p>Define on-site energy for tight-biding models.</p></td>
 </tr>
 </tbody>
 </table>
-<table border="1" class="docutils">
+<table class="docutils align-center">
 <colgroup>
-<col width="57%" />
-<col width="43%" />
+<col style="width: 57%" />
+<col style="width: 43%" />
 </colgroup>
-<tbody valign="top">
-<tr class="row-odd"><td><strong>display</strong></td>
-<td>&#160;</td>
+<tbody>
+<tr class="row-odd"><td><p><strong>display</strong></p></td>
+<td></td>
 </tr>
-<tr class="row-even"><td><strong>get_nsta</strong></td>
-<td>&#160;</td>
+<tr class="row-even"><td><p><strong>get_nsta</strong></p></td>
+<td></td>
 </tr>
-<tr class="row-odd"><td><strong>k_path</strong></td>
-<td>&#160;</td>
+<tr class="row-odd"><td><p><strong>k_path</strong></p></td>
+<td></td>
 </tr>
-<tr class="row-even"><td><strong>set_hop</strong></td>
-<td>&#160;</td>
+<tr class="row-even"><td><p><strong>set_hop</strong></p></td>
+<td></td>
 </tr>
-<tr class="row-odd"><td><strong>solve_all</strong></td>
-<td>&#160;</td>
+<tr class="row-odd"><td><p><strong>solve_all</strong></p></td>
+<td></td>
 </tr>
-<tr class="row-even"><td><strong>solve_one</strong></td>
-<td>&#160;</td>
+<tr class="row-even"><td><p><strong>solve_one</strong></p></td>
+<td></td>
 </tr>
 </tbody>
 </table>
 <dl class="method">
 <dt id="tbpy.tb_model.display">
-<code class="descname">display</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tbpy.html#tb_model.display"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tbpy.tb_model.display" title="Permalink to this definition">¶</a></dt>
+<code class="descname">display</code><span class="sig-paren">(</span><em>self</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tbpy.html#tb_model.display"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tbpy.tb_model.display" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
 <dt id="tbpy.tb_model.get_nsta">
-<code class="descname">get_nsta</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tbpy.html#tb_model.get_nsta"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tbpy.tb_model.get_nsta" title="Permalink to this definition">¶</a></dt>
+<code class="descname">get_nsta</code><span class="sig-paren">(</span><em>self</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tbpy.html#tb_model.get_nsta"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tbpy.tb_model.get_nsta" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
 <dt id="tbpy.tb_model.k_path">
-<code class="descname">k_path</code><span class="sig-paren">(</span><em>hspts</em>, <em>nk</em>, <em>report=True</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tbpy.html#tb_model.k_path"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tbpy.tb_model.k_path" title="Permalink to this definition">¶</a></dt>
+<code class="descname">k_path</code><span class="sig-paren">(</span><em>self</em>, <em>hspts</em>, <em>nk</em>, <em>report=True</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tbpy.html#tb_model.k_path"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tbpy.tb_model.k_path" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
 <dt id="tbpy.tb_model.set_hop">
-<code class="descname">set_hop</code><span class="sig-paren">(</span><em>hop_amp</em>, <em>ind_i</em>, <em>ind_j</em>, <em>ind_R=None</em>, <em>mode='set'</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tbpy.html#tb_model.set_hop"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tbpy.tb_model.set_hop" title="Permalink to this definition">¶</a></dt>
+<code class="descname">set_hop</code><span class="sig-paren">(</span><em>self</em>, <em>hop_amp</em>, <em>ind_i</em>, <em>ind_j</em>, <em>ind_R=None</em>, <em>mode='set'</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tbpy.html#tb_model.set_hop"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tbpy.tb_model.set_hop" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="classmethod">
 <dt id="tbpy.tb_model.set_onsite">
 <em class="property">classmethod </em><code class="descname">set_onsite</code><span class="sig-paren">(</span><em>onsite_en</em>, <em>ind_i=None</em>, <em>mode='set'</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tbpy.html#tb_model.set_onsite"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tbpy.tb_model.set_onsite" title="Permalink to this definition">¶</a></dt>
 <dd><p>Define on-site energy for tight-biding models.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>onsite_en</strong> <span class="classifier-delimiter">:</span> <span class="classifier">array of floats</span></dt>
-<dd><p class="first last">A list of energy for each orbitals.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>onsite_en</strong><span class="classifier">array of floats</span></dt><dd><p>A list of energy for each orbitals.</p>
 </dd>
-<dt><strong>ind_i</strong> <span class="classifier-delimiter">:</span> <span class="classifier">int</span></dt>
-<dd><p class="first last">Index of obtial whose on-site energy you wish to change.</p>
+<dt><strong>ind_i</strong><span class="classifier">int</span></dt><dd><p>Index of obtial whose on-site energy you wish to change.</p>
 </dd>
-<dt><strong>mode</strong> <span class="classifier-delimiter">:</span> <span class="classifier">string</span></dt>
-<dd><p class="first">Specify the way you wish to change on-site energy.</p>
-<ul class="last simple">
-<li>“set” Defalt value.</li>
+<dt><strong>mode</strong><span class="classifier">string</span></dt><dd><p>Specify the way you wish to change on-site energy.</p>
+<ul class="simple">
+<li><p>“set” Defalt value.</p></li>
 </ul>
 </dd>
 </dl>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
 <dt id="tbpy.tb_model.solve_all">
-<code class="descname">solve_all</code><span class="sig-paren">(</span><em>k_list=None</em>, <em>eig_vectors=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tbpy.html#tb_model.solve_all"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tbpy.tb_model.solve_all" title="Permalink to this definition">¶</a></dt>
+<code class="descname">solve_all</code><span class="sig-paren">(</span><em>self</em>, <em>k_list=None</em>, <em>eig_vectors=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tbpy.html#tb_model.solve_all"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tbpy.tb_model.solve_all" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
 <dt id="tbpy.tb_model.solve_one">
-<code class="descname">solve_one</code><span class="sig-paren">(</span><em>k_point=None</em>, <em>eig_vectors=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tbpy.html#tb_model.solve_one"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tbpy.tb_model.solve_one" title="Permalink to this definition">¶</a></dt>
+<code class="descname">solve_one</code><span class="sig-paren">(</span><em>self</em>, <em>k_point=None</em>, <em>eig_vectors=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tbpy.html#tb_model.solve_one"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tbpy.tb_model.solve_one" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
@@ -351,28 +323,16 @@ is spinless, if <em>nspin</em> is 2, then it is spinful. By defalt, this paramet
   
 
 
-  
-
-    
-    
-      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
-        <script type="text/javascript" src="../_static/jquery.js"></script>
-        <script type="text/javascript" src="../_static/underscore.js"></script>
-        <script type="text/javascript" src="../_static/doctools.js"></script>
-        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-        <script type="text/javascript" src="../_static/collapsible-lists/js/CollapsibleLists.compressed.js"></script>
-        <script type="text/javascript" src="../_static/collapsible-lists/js/apply-collapsible-lists.js"></script>
-    
-
-  
-
-  <script type="text/javascript" src="../_static/js/theme.js"></script>
-
   <script type="text/javascript">
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script> 
+  </script>
+
+  
+  
+    
+   
 
 </body>
 </html>

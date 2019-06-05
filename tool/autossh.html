@@ -17,35 +17,36 @@
   
 
   
+  <script type="text/javascript" src="../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../_static/jquery.js"></script>
+        <script type="text/javascript" src="../_static/underscore.js"></script>
+        <script type="text/javascript" src="../_static/doctools.js"></script>
+        <script type="text/javascript" src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
 
-  
-  
     
 
   
-
   <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-  <link rel="stylesheet" href="../_static/collapsible-lists/css/tree_view.css" type="text/css" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Git" href="git.html" />
     <link rel="prev" title="Use for Linux(Fedora)" href="fedora.html" /> 
-
-  
-  <script src="../_static/js/modernizr.min.js"></script>
-
 </head>
 
 <body class="wy-body-for-nav">
 
    
   <div class="wy-grid-for-nav">
-
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search">
+        <div class="wy-side-nav-search" >
           
 
           
@@ -159,70 +160,70 @@
 <p>Autossh is a program to start a copy of ssh and monitor it, restarting it as necessary should it die or stop passing traffic. Here we use autossh to realize <code class="docutils literal notranslate"><span class="pre">NAT</span> <span class="pre">traversal</span></code>.</p>
 <p>Suppose we have three mechine:</p>
 <ol class="upperalpha simple">
-<li>HBC without public IP, ssh port 22</li>
-<li>Server(like <a class="reference external" href="http://www.aliyun.com">aliyun</a>) with public IP, ssh port 12318, another two free ports 5678 and 8765</li>
-<li>PC which need to connect A</li>
+<li><p>HBC without public IP, ssh port 22</p></li>
+<li><p>Server(like <a class="reference external" href="http://www.aliyun.com">aliyun</a>) with public IP, ssh port 12318, another two free ports 5678 and 8765</p></li>
+<li><p>PC which need to connect A</p></li>
 </ol>
 <div class="section" id="connect-without-password-for-a-b">
 <h2>Connect without password for <code class="docutils literal notranslate"><span class="pre">A-&gt;B</span></code><a class="headerlink" href="#connect-without-password-for-a-b" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
-<li>Generate key in A:</li>
+<li><p>Generate key in A:</p></li>
 </ul>
-<div class="code shell highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ssh</span><span class="o">-</span><span class="n">keygen</span> <span class="o">-</span><span class="n">t</span> <span class="n">rsa</span>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>ssh-keygen -t rsa
 </pre></div>
 </div>
 <ul class="simple">
-<li>Give public key of A to B</li>
+<li><p>Give public key of A to B</p></li>
 </ul>
-<div class="code shell highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cat</span> <span class="o">.</span><span class="n">ssh</span><span class="o">/</span><span class="n">id_rsa</span><span class="o">.</span><span class="n">pub</span> <span class="o">|</span> <span class="n">ssh</span> <span class="n">user_B</span><span class="nd">@ip_B</span> <span class="s1">&#39;cat &gt;&gt; .ssh/authorized_keys&#39;</span>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>cat .ssh/id_rsa.pub <span class="p">|</span> ssh user_B@ip_B <span class="s1">&#39;cat &gt;&gt; .ssh/authorized_keys&#39;</span>
 </pre></div>
 </div>
 <ul class="simple">
-<li>Check that you can connect from A to B without password, otherswise you should see <a class="reference internal" href="#others">Others</a> .</li>
+<li><p>Check that you can connect from A to B without password, otherswise you should see <a class="reference internal" href="#others">Others</a> .</p></li>
 </ul>
 </div>
 <div class="section" id="auto-ssh-from-b-a">
 <h2>Auto ssh from <code class="docutils literal notranslate"><span class="pre">B-&gt;A</span></code><a class="headerlink" href="#auto-ssh-from-b-a" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
-<li>Now you can create a tunnel from B to A</li>
+<li><p>Now you can create a tunnel from B to A</p></li>
 </ul>
-<div class="code shell highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">autossh</span> <span class="o">-</span><span class="n">M</span> <span class="mi">5678</span> <span class="o">-</span><span class="n">fCNR</span> <span class="mi">8765</span><span class="p">:</span><span class="n">localhost</span><span class="p">:</span><span class="mi">22</span> <span class="n">user_B</span><span class="nd">@ip_B</span> <span class="o">-</span><span class="n">p12318</span>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>autossh -M <span class="m">5678</span> -fCNR <span class="m">8765</span>:localhost:22 user_B@ip_B -p12318
 </pre></div>
 </div>
 <ul class="simple">
-<li>In the file <code class="docutils literal notranslate"><span class="pre">/etc/ssh/sshd_config</span></code>, you need to set</li>
+<li><p>In the file <code class="docutils literal notranslate"><span class="pre">/etc/ssh/sshd_config</span></code>, you need to set</p></li>
 </ul>
-<div class="code shell highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">GatewayPorts</span> <span class="n">yes</span>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>GatewayPorts yes
 </pre></div>
 </div>
 <ul class="simple">
-<li>Finally, connection from C to A is OK</li>
+<li><p>Finally, connection from C to A is OK</p></li>
 </ul>
-<div class="code shell highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ssh</span> <span class="n">user_A</span><span class="nd">@ip_B</span> <span class="o">-</span><span class="n">p</span> <span class="mi">8765</span>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>ssh user_A@ip_B -p <span class="m">8765</span>
 </pre></div>
 </div>
 </div>
 <div class="section" id="others">
 <h2>Others<a class="headerlink" href="#others" title="Permalink to this headline">¶</a></h2>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
+<p class="admonition-title">Note</p>
 <ol class="arabic simple">
-<li>make sure that A can connect B</li>
-<li>need to change access permission for .ssh and .ssh/* in B</li>
+<li><p>make sure that A can connect B</p></li>
+<li><p>need to change access permission for .ssh and .ssh/* in B</p></li>
 </ol>
-<div class="code shell last highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">chmod</span> <span class="mi">700</span> <span class="o">.</span><span class="n">ssh</span>
-<span class="n">chmod</span> <span class="mi">600</span> <span class="o">.</span><span class="n">ssh</span><span class="o">/*</span>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>chmod <span class="m">700</span> .ssh
+chmod <span class="m">600</span> .ssh/*
 </pre></div>
 </div>
 </div>
 <div class="admonition error">
-<p class="first admonition-title">Error</p>
+<p class="admonition-title">Error</p>
 <p>you may still have wrong in connect B from A</p>
-<div class="code shell highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sign_and_send_pubkey</span><span class="p">:</span> <span class="n">signing</span> <span class="n">failed</span><span class="p">:</span> <span class="n">agent</span> <span class="n">refused</span> <span class="n">operation</span>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>sign_and_send_pubkey: signing failed: agent refused operation
 </pre></div>
 </div>
 <p>you should do this to add the key</p>
-<div class="code shell last highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ssh</span><span class="o">-</span><span class="n">add</span> <span class="o">~/.</span><span class="n">ssh</span><span class="o">/</span><span class="n">id_rsa</span>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>ssh-add ~/.ssh/id_rsa
 </pre></div>
 </div>
 </div>
@@ -240,7 +241,7 @@
         <a href="git.html" class="btn btn-neutral float-right" title="Git" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="fedora.html" class="btn btn-neutral" title="Use for Linux(Fedora)" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="fedora.html" class="btn btn-neutral float-left" title="Use for Linux(Fedora)" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -266,28 +267,16 @@
   
 
 
-  
-
-    
-    
-      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
-        <script type="text/javascript" src="../_static/jquery.js"></script>
-        <script type="text/javascript" src="../_static/underscore.js"></script>
-        <script type="text/javascript" src="../_static/doctools.js"></script>
-        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-        <script type="text/javascript" src="../_static/collapsible-lists/js/CollapsibleLists.compressed.js"></script>
-        <script type="text/javascript" src="../_static/collapsible-lists/js/apply-collapsible-lists.js"></script>
-    
-
-  
-
-  <script type="text/javascript" src="../_static/js/theme.js"></script>
-
   <script type="text/javascript">
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script> 
+  </script>
+
+  
+  
+    
+   
 
 </body>
 </html>

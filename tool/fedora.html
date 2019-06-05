@@ -17,35 +17,36 @@
   
 
   
+  <script type="text/javascript" src="../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../_static/jquery.js"></script>
+        <script type="text/javascript" src="../_static/underscore.js"></script>
+        <script type="text/javascript" src="../_static/doctools.js"></script>
+        <script type="text/javascript" src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
 
-  
-  
     
 
   
-
   <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-  <link rel="stylesheet" href="../_static/collapsible-lists/css/tree_view.css" type="text/css" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Autossh" href="autossh.html" />
     <link rel="prev" title="Welcome to My Notes!" href="../index.html" /> 
-
-  
-  <script src="../_static/js/modernizr.min.js"></script>
-
 </head>
 
 <body class="wy-body-for-nav">
 
    
   <div class="wy-grid-for-nav">
-
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search">
+        <div class="wy-side-nav-search" >
           
 
           
@@ -82,7 +83,10 @@
               <p class="caption"><span class="caption-text">Contents:</span></p>
 <ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Use for Linux(Fedora)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#installation">Installation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#repository">Repository</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#systemd">Systemd</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#software">Software</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="autossh.html">Autossh</a></li>
@@ -156,6 +160,16 @@
 <h1>Use for Linux(Fedora)<a class="headerlink" href="#use-for-linux-fedora" title="Permalink to this headline">¶</a></h1>
 <p>Fedora is a nice Linux distribution developed by the community-supported Fedora Project
 and Sponsored by Red Hat. Here I will list some contents of Fedora when I using it.</p>
+<div class="section" id="installation">
+<h2>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h2>
+<p>Win10+Fedora with 2 drives: 250GB SSD and 500GB HDD.</p>
+<p>After Win10 installed, there are 125GB SSD and 233GB HDD left. I want to install
+root(/), swap, boot, boot-efi on SSD and install home(/home) on HDD. I have to creat two Volumn Group
+to make sure the root(/) and home(/home) are mounted at two partitions.</p>
+<p>There may be a bug that the maximum boot size for <code class="docutils literal notranslate"><span class="pre">ext4</span></code> file system is 1024KB, but the minimum size for
+installation is 200MB. I choose <code class="docutils literal notranslate"><span class="pre">EFI</span> <span class="pre">System</span> <span class="pre">Partition</span></code> instead and set 1024MB size, then reselect <code class="docutils literal notranslate"><span class="pre">ext4</span></code>.
+The problem seems to be solved but I don’t know why.</p>
+</div>
 <div class="section" id="repository">
 <h2>Repository<a class="headerlink" href="#repository" title="Permalink to this headline">¶</a></h2>
 <p>We use <code class="docutils literal notranslate"><span class="pre">DNF</span></code> as a tool to manage the RPM packages and download software from
@@ -163,36 +177,79 @@ repository, such as <code class="docutils literal notranslate"><span class="pre"
 repositories are slowly downloaded for us at home, we need to use Domestic mirrors
 instead. The third part mirrors are in the following.</p>
 <ul class="simple">
-<li>163:</li>
+<li><p>163:</p></li>
 </ul>
-<div class="code shell highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">wget</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">mirrors</span><span class="o">.</span><span class="mf">163.</span><span class="n">com</span><span class="o">/.</span><span class="n">help</span><span class="o">/</span><span class="n">fedora</span><span class="o">-</span><span class="mf">163.</span><span class="n">repo</span>
-<span class="n">wget</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">mirrors</span><span class="o">.</span><span class="mf">163.</span><span class="n">com</span><span class="o">/.</span><span class="n">help</span><span class="o">/</span><span class="n">fedora</span><span class="o">-</span><span class="n">updates</span><span class="o">-</span><span class="mf">163.</span><span class="n">repo</span>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>wget http://mirrors.163.com/.help/fedora-163.repo
+wget http://mirrors.163.com/.help/fedora-updates-163.repo
 </pre></div>
 </div>
 <ul class="simple">
-<li>aliyun</li>
+<li><p>aliyun</p></li>
 </ul>
-<div class="code shell highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">wget</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">mirrors</span><span class="o">.</span><span class="n">aliyun</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">repo</span><span class="o">/</span><span class="n">fedora</span><span class="o">.</span><span class="n">repo</span>
-<span class="n">wget</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">mirrors</span><span class="o">.</span><span class="n">aliyun</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">repo</span><span class="o">/</span><span class="n">fedora</span><span class="o">-</span><span class="n">updates</span><span class="o">.</span><span class="n">repo</span>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>wget http://mirrors.aliyun.com/repo/fedora.repo
+wget http://mirrors.aliyun.com/repo/fedora-updates.repo
 </pre></div>
 </div>
 <p>There are some useful mirrors in the mean while</p>
 <ul>
-<li><p class="first"><a class="reference external" href="https://github.com/FZUG/repo/wiki/%E6%B7%BB%E5%8A%A0-FZUG-%E6%BA%90">FZUG</a></p>
+<li><p><a class="reference external" href="https://github.com/FZUG/repo/wiki/%E6%B7%BB%E5%8A%A0-FZUG-%E6%BA%90">FZUG</a></p>
 <blockquote>
 <div><p>a Fedora software repo of Chinese community.</p>
 </div></blockquote>
 </li>
-<li><p class="first"><a class="reference external" href="https://rpmfusion.org/Configuration/">RPMfusion</a></p>
-</li>
+<li><p><a class="reference external" href="https://rpmfusion.org/Configuration/">RPMfusion</a></p></li>
 </ul>
 <p>We can choose the fastest mirror by setting <code class="docutils literal notranslate"><span class="pre">fastestmirror=true</span></code> in
 <code class="docutils literal notranslate"><span class="pre">/etc/dnf/dnf.conf</span></code> after Fedora 22. the installation is as following</p>
-<div class="code shell highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">dnf</span> <span class="n">clean</span> <span class="nb">all</span>
-<span class="n">download</span> <span class="o">*.</span><span class="n">repo</span> <span class="ow">in</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">yum</span><span class="o">.</span><span class="n">repos</span><span class="o">.</span><span class="n">d</span><span class="o">/</span>
-<span class="n">dnf</span> <span class="n">makecache</span>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>dnf clean all
+download *.repo in /etc/yum.repos.d/
+dnf makecache
 </pre></div>
 </div>
+</div>
+<div class="section" id="systemd">
+<h2>Systemd<a class="headerlink" href="#systemd" title="Permalink to this headline">¶</a></h2>
+<p>systemd is a suite of basic building blocks for a Linux system.
+It provides a system and service manager that runs as PID 1 and
+starts the rest of the system.</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="o">[</span>Unit<span class="o">]</span>
+<span class="nv">Description</span><span class="o">=</span>Name of Service
+<span class="nv">After</span><span class="o">=</span>network.target <span class="c1"># start after network service</span>
+
+<span class="o">[</span>Service<span class="o">]</span>
+<span class="nv">Type</span><span class="o">=</span>simple
+<span class="nv">User</span><span class="o">=</span>root
+<span class="nv">ExecStart</span><span class="o">=</span>Your Commond
+
+<span class="o">[</span>Install<span class="o">]</span>
+<span class="nv">WantedBy</span><span class="o">=</span>multi-user.target <span class="c1"># runlevels</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="software">
+<h2>Software<a class="headerlink" href="#software" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>Anaconda</p></li>
+<li><p>Matlab</p></li>
+<li><p>Chrome</p></li>
+<li><p>Shadowsocks</p></li>
+<li><p>Wechat</p></li>
+<li><p>Tlp and Powertop</p></li>
+</ul>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>sudo tlp-stat -b
+sudo tlp start
+
+sudo powertop --html<span class="o">=</span>xx.html
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>TexStudio and TexLive</p></li>
+<li><p>Inkscape</p></li>
+<li><p>Zotero and Nutstore</p></li>
+<li><p>Typora</p></li>
+<li><p>MEGASync</p></li>
+<li><p>MKL</p></li>
+</ul>
 </div>
 </div>
 
@@ -207,7 +264,7 @@ instead. The third part mirrors are in the following.</p>
         <a href="autossh.html" class="btn btn-neutral float-right" title="Autossh" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="../index.html" class="btn btn-neutral" title="Welcome to My Notes!" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="../index.html" class="btn btn-neutral float-left" title="Welcome to My Notes!" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -233,28 +290,16 @@ instead. The third part mirrors are in the following.</p>
   
 
 
-  
-
-    
-    
-      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
-        <script type="text/javascript" src="../_static/jquery.js"></script>
-        <script type="text/javascript" src="../_static/underscore.js"></script>
-        <script type="text/javascript" src="../_static/doctools.js"></script>
-        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-        <script type="text/javascript" src="../_static/collapsible-lists/js/CollapsibleLists.compressed.js"></script>
-        <script type="text/javascript" src="../_static/collapsible-lists/js/apply-collapsible-lists.js"></script>
-    
-
-  
-
-  <script type="text/javascript" src="../_static/js/theme.js"></script>
-
   <script type="text/javascript">
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script> 
+  </script>
+
+  
+  
+    
+   
 
 </body>
 </html>

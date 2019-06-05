@@ -17,35 +17,36 @@
   
 
   
+  <script type="text/javascript" src="../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../_static/jquery.js"></script>
+        <script type="text/javascript" src="../_static/underscore.js"></script>
+        <script type="text/javascript" src="../_static/doctools.js"></script>
+        <script type="text/javascript" src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
 
-  
-  
     
 
   
-
   <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-  <link rel="stylesheet" href="../_static/collapsible-lists/css/tree_view.css" type="text/css" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Configure my own Vim" href="vim.html" />
     <link rel="prev" title="Autossh" href="autossh.html" /> 
-
-  
-  <script src="../_static/js/modernizr.min.js"></script>
-
 </head>
 
 <body class="wy-body-for-nav">
 
    
   <div class="wy-grid-for-nav">
-
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search">
+        <div class="wy-side-nav-search" >
           
 
           
@@ -159,26 +160,26 @@
 <div class="section" id="install-git">
 <h2>Install git<a class="headerlink" href="#install-git" title="Permalink to this headline">¶</a></h2>
 <ol class="arabic simple">
-<li>Download the git</li>
+<li><p>Download the git</p></li>
 </ol>
-<div class="code shell highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">wget</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">github</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">git</span><span class="o">/</span><span class="n">git</span><span class="o">/</span><span class="n">archive</span><span class="o">/</span><span class="n">v2</span><span class="o">.</span><span class="mf">19.1</span><span class="o">.</span><span class="n">tar</span><span class="o">.</span><span class="n">gz</span>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>wget https://github.com/git/git/archive/v2.19.1.tar.gz
 </pre></div>
 </div>
 <ol class="arabic simple" start="2">
-<li>Compile and install it</li>
+<li><p>Compile and install it</p></li>
 </ol>
-<div class="code shell highlight-default notranslate"><div class="highlight"><pre><span></span>tar -xvf v2.19.1.tar.gz
-cd git-2.19.1
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>tar -xvf v2.19.1.tar.gz
+<span class="nb">cd</span> git-2.19.1
 make configure
-./configure --prefix=$HOME/software/git-2.19.1
+./configure --prefix<span class="o">=</span><span class="nv">$HOME</span>/software/git-2.19.1
 make all doc
 make install
 </pre></div>
 </div>
 <div class="admonition error">
-<p class="first admonition-title">Error</p>
+<p class="admonition-title">Error</p>
 <p>lack of asciidoc</p>
-<div class="code shell last highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">wget</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">github</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">asciidoc</span><span class="o">/</span><span class="n">asciidoc</span><span class="o">/</span><span class="n">archive</span><span class="o">/</span><span class="mf">8.6</span><span class="o">.</span><span class="mf">10.</span><span class="n">tar</span><span class="o">.</span><span class="n">gz</span>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>wget https://github.com/asciidoc/asciidoc/archive/8.6.10.tar.gz
 </pre></div>
 </div>
 </div>
@@ -186,44 +187,44 @@ make install
 <div class="section" id="commond-of-git">
 <h2>Commond of git<a class="headerlink" href="#commond-of-git" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
-<li>Initialize repository</li>
+<li><p>Initialize repository</p></li>
 </ul>
-<div class="code shell highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">git</span> <span class="n">init</span> <span class="c1"># initialize</span>
-<span class="n">git</span> <span class="n">add</span> <span class="c1"># add a file</span>
-<span class="n">git</span> <span class="n">commit</span> <span class="o">-</span><span class="n">m</span> <span class="s2">&quot;xxx&quot;</span> <span class="c1"># commit</span>
-<span class="n">git</span> <span class="n">rm</span> <span class="c1"># delete</span>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>git init <span class="c1"># initialize</span>
+git add <span class="c1"># add a file</span>
+git commit -m <span class="s2">&quot;xxx&quot;</span> <span class="c1"># commit</span>
+git rm <span class="c1"># delete</span>
 </pre></div>
 </div>
 <ul class="simple">
-<li>Version control</li>
+<li><p>Version control</p></li>
 </ul>
-<div class="code shell highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">git</span> <span class="n">status</span> <span class="c1"># check whether have modified</span>
-<span class="n">git</span> <span class="n">diff</span> <span class="c1"># difference between working directory and repository</span>
-<span class="n">git</span> <span class="n">diff</span> <span class="o">-</span><span class="n">HEAD</span> <span class="o">--</span> <span class="o">&lt;</span><span class="n">file</span><span class="o">&gt;</span>
-<span class="n">git</span> <span class="n">log</span> <span class="o">--</span><span class="n">pretty</span><span class="o">=</span><span class="n">oneline</span> <span class="c1"># commit log</span>
-<span class="n">git</span> <span class="n">reflog</span> <span class="c1"># future</span>
-<span class="n">git</span> <span class="n">reset</span> <span class="o">--</span><span class="n">hard</span> <span class="n">HEAD</span><span class="o">^</span> <span class="c1"># a-&gt;b-&gt;c  a-&gt;b HEAD^^ HEAD~100</span>
-<span class="n">git</span> <span class="n">reset</span> <span class="o">--</span><span class="n">hard</span> <span class="o">&lt;</span><span class="n">commit_id</span><span class="o">&gt;</span> <span class="c1"># a-&gt;b a-&gt;b-&gt;c</span>
-<span class="n">git</span> <span class="n">revert</span> <span class="o">&lt;</span><span class="n">commit_id</span><span class="o">&gt;</span>
-<span class="n">git</span> <span class="n">checkout</span> <span class="o">--</span> <span class="o">&lt;</span><span class="n">file</span><span class="o">&gt;</span> <span class="c1"># throw modification in working directory</span>
-<span class="n">git</span> <span class="n">reset</span>  <span class="n">HEAD</span> <span class="o">&lt;</span><span class="n">file</span><span class="o">&gt;</span> <span class="c1"># throw modification in stage</span>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>git status <span class="c1"># check whether have modified</span>
+git diff <span class="c1"># difference between working directory and repository</span>
+git diff -HEAD -- &lt;file&gt;
+git log --pretty<span class="o">=</span>oneline <span class="c1"># commit log</span>
+git reflog <span class="c1"># future</span>
+git reset --hard HEAD^ <span class="c1"># a-&gt;b-&gt;c  a-&gt;b HEAD^^ HEAD~100</span>
+git reset --hard &lt;commit_id&gt; <span class="c1"># a-&gt;b a-&gt;b-&gt;c</span>
+git revert &lt;commit_id&gt;
+git checkout -- &lt;file&gt; <span class="c1"># throw modification in working directory</span>
+git reset  HEAD &lt;file&gt; <span class="c1"># throw modification in stage</span>
 </pre></div>
 </div>
 <ul class="simple">
-<li>Add remote repository</li>
+<li><p>Add remote repository</p></li>
 </ul>
-<div class="code shell highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">git</span> <span class="n">remote</span> <span class="n">add</span> <span class="n">origin</span> <span class="n">git</span><span class="nd">@server</span><span class="o">-</span><span class="n">name</span><span class="p">:</span><span class="n">path</span><span class="o">/</span><span class="n">repo</span><span class="o">-</span><span class="n">name</span><span class="o">.</span><span class="n">git</span>
-<span class="n">git</span> <span class="n">push</span> <span class="o">-</span><span class="n">u</span> <span class="n">origin</span> <span class="n">master</span>
-<span class="n">git</span> <span class="n">clone</span>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>git remote add origin git@server-name:path/repo-name.git
+git push -u origin master
+git clone
 </pre></div>
 </div>
 <ul class="simple">
-<li>Branch management</li>
+<li><p>Branch management</p></li>
 </ul>
-<div class="code shell highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">git</span> <span class="n">checkout</span> <span class="o">-</span><span class="n">b</span> <span class="n">dev</span> <span class="c1"># create a new branch and switch to it</span>
-<span class="n">git</span> <span class="n">branch</span>
-<span class="n">git</span> <span class="n">branch</span> <span class="o">-</span><span class="n">d</span> <span class="o">&lt;</span><span class="n">branch_name</span><span class="o">&gt;</span>
-<span class="n">git</span> <span class="n">merge</span> <span class="o">&lt;</span><span class="n">branch_name</span><span class="o">&gt;</span>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>git checkout -b dev <span class="c1"># create a new branch and switch to it</span>
+git branch
+git branch -d &lt;branch_name&gt;
+git merge &lt;branch_name&gt;
 </pre></div>
 </div>
 </div>
@@ -240,7 +241,7 @@ make install
         <a href="vim.html" class="btn btn-neutral float-right" title="Configure my own Vim" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="autossh.html" class="btn btn-neutral" title="Autossh" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="autossh.html" class="btn btn-neutral float-left" title="Autossh" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -266,28 +267,16 @@ make install
   
 
 
-  
-
-    
-    
-      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
-        <script type="text/javascript" src="../_static/jquery.js"></script>
-        <script type="text/javascript" src="../_static/underscore.js"></script>
-        <script type="text/javascript" src="../_static/doctools.js"></script>
-        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-        <script type="text/javascript" src="../_static/collapsible-lists/js/CollapsibleLists.compressed.js"></script>
-        <script type="text/javascript" src="../_static/collapsible-lists/js/apply-collapsible-lists.js"></script>
-    
-
-  
-
-  <script type="text/javascript" src="../_static/js/theme.js"></script>
-
   <script type="text/javascript">
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script> 
+  </script>
+
+  
+  
+    
+   
 
 </body>
 </html>
